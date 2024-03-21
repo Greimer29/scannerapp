@@ -29,11 +29,11 @@ export default defineComponent({
     const torchOn = ref(false);
     const router = useRouter();
 
-    const stopScan = () => {
-      BarcodeScanner.showBackground();
-      BarcodeScanner.stopScan();
+    const stopScan = async () => {
+      await BarcodeScanner.stopScan();
+      await BarcodeScanner.showBackground();
       document.querySelector("body").classList.remove("scanner-active");
-      goBack();
+      router.go(-1);
     };
 
     const startScan = async () => {
@@ -74,7 +74,6 @@ export default defineComponent({
     const askUser = () => {
       prepare();
       const c = confirm("Do you want to scan a barcode?");
-
       if (c) {
         startScan();
       } else {
@@ -84,6 +83,8 @@ export default defineComponent({
 
     const goBack = () => {
       router.go(-1);
+      BarcodeScanner.stopScan();
+      BarcodeScanner.showBackground();
     };
 
     const toggleTorch = () => {
@@ -100,7 +101,8 @@ export default defineComponent({
 
     onMounted(() => {
       App.addListener("backButton", () => {
-        router.go(-1);
+        router.push("/");
+        stopScan();
       });
       startScan();
     });

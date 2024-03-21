@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
